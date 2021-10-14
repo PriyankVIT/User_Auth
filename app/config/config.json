@@ -1,0 +1,10 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "TIGER",
+        "database": "user-authentication"
+    },
+    "secret": "Priyank Kaushik JWT Token"
+}
