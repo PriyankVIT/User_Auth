@@ -5,7 +5,6 @@ const validateRequest = require("../middleware/validate-request");
 const authorize = require("../middleware/authorize");
 const userService = require("./user.service");
 
-// routes
 router.post("/authenticate", authenticateSchema, authenticate);
 router.post("/register", registerSchema, register);
 router.get("/", authorize(), getAll);
@@ -34,7 +33,10 @@ function registerSchema(req, res, next) {
   const schema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().required(),
-    password: Joi.string().min(6).required(),
+    password: Joi.string()
+      .min(6)
+      .required()
+      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/),
   });
   validateRequest(req, next, schema);
 }
