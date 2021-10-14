@@ -25,6 +25,7 @@
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.0",
+    "rand-token": "^1.0.1",
     "sequelize": "^6.7.0"
   }
 }
