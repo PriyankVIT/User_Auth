@@ -11,6 +11,7 @@ router.get("/", authorize(), getAll);
 router.get("/current", authorize(), getCurrent);
 router.put("/:id", authorize(), updateSchema, update);
 router.delete("/:id", authorize(), _delete);
+router.post("/refresh", authorize(), refresh);
 
 module.exports = router;
 
@@ -79,5 +80,12 @@ function _delete(req, res, next) {
   userService
     .delete(req.params.id)
     .then(() => res.json({ message: "User deleted successfully" }))
+    .catch(next);
+}
+
+function refresh(req, res, next) {
+  userService
+    .refresh(req.body)
+    .then((user) => res.json(user))
     .catch(next);
 }

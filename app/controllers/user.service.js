@@ -1,12 +1,13 @@
 const config = require("../config/config.json");
 const jwt = require("jsonwebtoken");
+var randtoken = require("rand-token");
 const bcrypt = require("bcryptjs");
 const db = require("../config/db");
 
 module.exports = {
   authenticate,
   getAll,
-
+  refresh,
   create,
   update,
   delete: _delete,
@@ -20,6 +21,16 @@ async function authenticate({ email, password }) {
 
   const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: "1d" });
   return { ...omitHash(user.get()), token };
+}
+
+async function refresh({ email, password }) {
+  const user = await db.User.scope("withHash").findOne({ where: { email } });
+  if (!user || !(await bcrypt.compare(password, user.hash)))
+    throw "Email or password is incorrect";
+  const refreshToken = jwt.sign({ sub: user.id }, config.secret, {
+    expiresIn: "1d",
+  });
+  return { refreshToken };
 }
 
 async function getAll() {
